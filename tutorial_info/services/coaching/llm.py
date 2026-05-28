@@ -1,0 +1,52 @@
+from services.config.workout_config import PROMPT
+
+
+class LLMCoach:
+    def __init__(self, groq_client):
+        self.client = groq_client
+        self.history = []
+        self.system_prompt = PROMPT
+
+    def give_feedback(self, event, issue):
+        prompt = f"Event: {event}"
+
+        if issue:
+            prompt += f" Form Issue: {issue}"
+
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            *self.history[-10:],
+            {"role": "user", "content": prompt}
+        ]
+
+        try:
+            response = self.client.chat.completions.create(
+                model="llama3-8b-8192",
+                messages=messages,
+                temperature=0.4,
+            )
+
+            text = response.choices[0].message.content.strip()
+
+        except Exception as e:
+            print("GROQ ERROR:", e)
+
+            if event == "workout_started":
+                text = "Workout started. Let's go."
+
+            elif event == "set_completed":
+                text = "Set completed. Great work."
+
+            elif event == "workout_completed":
+                text = "Workout completed. Amazing job."
+
+            elif issue:
+                text = issue
+
+            else:
+                text = "Keep going."
+
+        self.history.append({"role": "assistant", "content": text})
+
+        return text
+        
