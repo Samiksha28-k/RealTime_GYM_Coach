@@ -231,8 +231,7 @@ def main():
 
                 st.session_state.audio_to_play = None
 
-            time.sleep(3)
-            st.rerun()
+            
 
         inject_webrtc_styles()
 
