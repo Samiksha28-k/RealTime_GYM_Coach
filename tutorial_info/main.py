@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import asyncio
 import time
 import pandas as pd
 from services.auth.login_wall import render_login_wall
@@ -25,6 +26,10 @@ except Exception:
     WebRtcMode = None
   
 def main():
+    try:
+        asyncio.get_event_loop()
+    except RuntimeError:
+        asyncio.set_event_loop(asyncio.new_event_loop())
     st.set_page_config(
         page_icon="🏋️‍♀️",
         page_title="AI Real-time GYM Coach",
