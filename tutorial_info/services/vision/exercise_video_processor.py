@@ -1,4 +1,5 @@
 import os
+from av import VideoFrame
 import cv2
 
 import numpy as np
@@ -239,5 +240,5 @@ class VideoProcessorClass(VideoProcessorBase):
                 else:
                     self._latest_metrics = {"pose_detected": False}
 
-        return image
+        return VideoFrame.from_ndarray(image, format="bgr24")
     

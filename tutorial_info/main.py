@@ -185,11 +185,9 @@ def main():
 
     
  
-    if st.session_state.get("audio_to_play"):
-        autoplay_audio(st.session_state.audio_to_play)
+    
 
-    if st.session_state.get("audio_to_play"):
-        autoplay_audio(st.session_state.audio_to_play)
+    
 
     if st.session_state.get("coach_feedback"):
         st.markdown("")
@@ -224,18 +222,18 @@ def main():
                 key="exercise-analysis",
                 mode=WebRtcMode.SENDRECV,
                 video_processor_factory=VideoProcessorClass,
-                rtc_configuration={
-                    "iceServers": [
-                        {"urls": "stun:stun.l.google.com:19302"},
-                        {"urls": "stun:stun1.l.google.com:19302"}
-                    ]
-                },
+                # rtc_configuration={
+                #     "iceServers": [
+                #         {"urls": "stun:stun.l.google.com:19302"},
+                #         {"urls": "stun:stun1.l.google.com:19302"}
+                #     ]
+                # },
                 media_stream_constraints={"video": True, "audio": False},
-                async_processing=False
+                async_processing=True
             )
 
             if context.state.playing:
-                sync_metrics_update(context)
+                # sync_metrics_update(context)
 
                 if st.session_state.get("audio_to_play"):
                     autoplay_audio(st.session_state.audio_to_play)
