@@ -19,13 +19,16 @@ from services.coaching.voice_pipeline import VoicePipeline, autoplay_audio
 import traceback
 
 
+webrtc_available = False
+
 try:
     from streamlit_webrtc import webrtc_streamer, WebRtcMode
+    webrtc_available = True
 except Exception:
     webrtc_streamer = None
     WebRtcMode = None
-  
 def main():
+    
     try:
         asyncio.get_event_loop()
     except RuntimeError:
@@ -216,29 +219,28 @@ def main():
             unsafe_allow_html=True,
         )
     else:
-        context = webrtc_streamer(
-            key="exercise-analysis",
-            mode=WebRtcMode.SENDRECV,
-            video_processor_factory=VideoProcessorClass,
-            rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
-            media_stream_constraints={
-                "video": True,
-                "audio": False
-            },
-            async_processing=True
-        )
-        if context.state.playing:
+        if webrtc_available:
+            context = webrtc_streamer(
+                key="exercise-analysis",
+                mode=WebRtcMode.SENDRECV,
+                video_processor_factory=VideoProcessorClass,
+                rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+                media_stream_constraints={"video": True, "audio": False},
+                async_processing=True
+            )
 
-            sync_metrics_update(context)
+            if context.state.playing:
+                sync_metrics_update(context)
 
-            if st.session_state.get("audio_to_play"):
-                autoplay_audio(st.session_state.audio_to_play)
+                if st.session_state.get("audio_to_play"):
+                    autoplay_audio(st.session_state.audio_to_play)
+                    st.session_state.audio_to_play = None
 
-                st.session_state.audio_to_play = None
+            inject_webrtc_styles()
 
-            
-
-        inject_webrtc_styles()
+        else:
+            st.error("❌ Camera mode not supported on this deployment")
+            st.info("👉 Please run locally OR switch to video upload mode")
 
     st.divider()
 

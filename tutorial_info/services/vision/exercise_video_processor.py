@@ -1,6 +1,6 @@
 import os
 import cv2
-import av
+
 import numpy as np
 import mediapipe as mp
 import threading
@@ -239,5 +239,5 @@ class VideoProcessorClass(VideoProcessorBase):
                 else:
                     self._latest_metrics = {"pose_detected": False}
 
-        return av.VideoFrame.from_ndarray(image, format="bgr24")
+        return image
     
