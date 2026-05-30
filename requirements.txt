@@ -7,3 +7,4 @@ mediapipe==0.10.14
 protobuf==4.25.3
 groq==0.9.0
 gTTS==2.5.1
+av==11.0.0
