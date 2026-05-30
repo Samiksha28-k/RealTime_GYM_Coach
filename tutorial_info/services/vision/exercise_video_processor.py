@@ -19,7 +19,7 @@ from services.config.workout_config import POSE_CONNECTIONS
 class VideoProcessorClass(VideoProcessorBase):
     def __init__(self):
         try:
-            print("===== INIT START =====")
+            print("VideoProcessor INIT")
             self._lock = threading.Lock()
 
             print("LOCK OK")
@@ -213,7 +213,7 @@ class VideoProcessorClass(VideoProcessorBase):
         )
 
     def recv(self, frame):
-        print("RECV CALLED")
+        print("FRAME RECEIVED")
         image = np.asarray(
             cv2.flip(frame.to_ndarray(format="bgr24"), 1),
             dtype=np.uint8

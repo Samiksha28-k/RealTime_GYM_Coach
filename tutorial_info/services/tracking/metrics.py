@@ -8,8 +8,13 @@ def sync_metrics_update(context):
     if not context or not hasattr(context, "state") or not context.state.playing:
         return
     
+    print("SYNC CALLED")
+    
     processor = getattr(context, "video_processor", None)
 
+    
+    
+    print("PROCESSOR =", processor)
     if not processor:
         return 
     
