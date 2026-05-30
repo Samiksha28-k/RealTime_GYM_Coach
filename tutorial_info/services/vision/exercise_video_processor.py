@@ -18,45 +18,56 @@ from services.config.workout_config import POSE_CONNECTIONS
 
 class VideoProcessorClass(VideoProcessorBase):
     def __init__(self):
-        print("Processor created")
-        self._lock = threading.Lock()
-        self._latest_metrics = None
-        self._exercise_type = "Squats"
+        try:
+            print("===== INIT START =====")
+            self._lock = threading.Lock()
 
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+            print("LOCK OK")
+            self._latest_metrics = None
+            self._exercise_type = "Squats"
 
-        model_path = os.path.join(
-            BASE_DIR,
-            "..",
-            "..",
-            "ml_models",
-            "pose_landmarker_full.task"
-        )
+            BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+            print("BASE DIR:", BASE_DIR)
+            model_path = os.path.join(
+                BASE_DIR,
+                "..",
+                "..",
+                "ml_models",
+                "pose_landmarker_full.task"
+            )
 
-        model_path = os.path.abspath(model_path)
+            model_path = os.path.abspath(model_path)
+            print("MODEL PATH:", model_path)
 
-        base_option = python.BaseOptions(model_asset_path=model_path)
+            base_option = python.BaseOptions(model_asset_path=model_path)
 
-        options = vision.PoseLandmarkerOptions(
-            base_options=base_option,
-            running_mode=vision.RunningMode.VIDEO,
-            min_pose_detection_confidence=0.7,
-            min_pose_presence_confidence=0.7,
-            min_tracking_confidence=0.7,
-            output_segmentation_masks=False
-        )
+            print("BASE OPTION OK")
 
-        self._landmarker = vision.PoseLandmarker.create_from_options(options)
+            options = vision.PoseLandmarkerOptions(
+                base_options=base_option,
+                running_mode=vision.RunningMode.VIDEO,
+                min_pose_detection_confidence=0.7,
+                min_pose_presence_confidence=0.7,
+                min_tracking_confidence=0.7,
+                output_segmentation_masks=False
+            )
+            print("OPTIONS OK")
+            self._landmarker = vision.PoseLandmarker.create_from_options(options)
+            
+            print("LANDMARKER CREATED")
+            self._detectors = {
+                "Squats": SquatDetector(),
+                "Push-ups": PushUpDetector(),
+                "Biceps Curls (Dumbbell)": BicepsCurlDetector(),
+                "Shoulder Press": ShoulderPressDetector(),
+                "Lunges": LungesDetector(),
+            }
 
-        self._detectors = {
-            "Squats": SquatDetector(),
-            "Push-ups": PushUpDetector(),
-            "Biceps Curls (Dumbbell)": BicepsCurlDetector(),
-            "Shoulder Press": ShoulderPressDetector(),
-            "Lunges": LungesDetector(),
-        }
+            self._frame_timestamps_ms = 0
 
-        self._frame_timestamps_ms = 0
+        except Exception as e:
+            print("INIT FAILED:", e)
+            raise
     
     def set_latest_metrics(self, metrics):
         with self._lock:
@@ -202,12 +213,13 @@ class VideoProcessorClass(VideoProcessorBase):
         )
 
     def recv(self, frame):
-        print("Frame received")
+        print("RECV CALLED")
         image = np.asarray(
             cv2.flip(frame.to_ndarray(format="bgr24"), 1),
             dtype=np.uint8
         )
 
+      
         mp_image = mp.Image(
             image_format=mp.ImageFormat.SRGB,
             data=cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
@@ -215,6 +227,8 @@ class VideoProcessorClass(VideoProcessorBase):
 
         self._frame_timestamps_ms += 30
         result = self._landmarker.detect_for_video(mp_image, self._frame_timestamps_ms)
+
+        
 
         if result.pose_landmarks:
             landmarks = result.pose_landmarks[0]
