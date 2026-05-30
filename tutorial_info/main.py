@@ -54,7 +54,7 @@ def main():
         try:
             api_key = os.environ.get("GROQ_API_KEY", "")
 
-            
+            print("GROQ KEY EXISTS:", bool(os.getenv("GROQ_API_KEY")))
             
             groq_client = Groq(api_key=api_key)
             llm_coach = LLMCoach(groq_client)
@@ -218,7 +218,7 @@ def main():
         )
     else:
         if webrtc_available:
-            st.write("Before webrtc")
+            
             context = webrtc_streamer(
                 key="exercise-analysis",
                 mode=WebRtcMode.SENDRECV,
@@ -233,7 +233,7 @@ def main():
                 media_stream_constraints={"video": True, "audio": False},
                 async_processing=True
             )
-            st.write("After webrtc")
+            
 
             if context.state.playing:
                 sync_metrics_update(context)

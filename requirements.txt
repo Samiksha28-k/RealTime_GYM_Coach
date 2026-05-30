@@ -16,4 +16,4 @@ gTTS==2.5.1
 opencv-python-headless==4.9.0.80
 
 aiortc==1.10.1
-av==12.3.0
+av==13.1.0
