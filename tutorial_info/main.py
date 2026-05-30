@@ -233,7 +233,7 @@ def main():
             )
 
             if context.state.playing:
-                # sync_metrics_update(context)
+                sync_metrics_update(context)
 
                 if st.session_state.get("audio_to_play"):
                     autoplay_audio(st.session_state.audio_to_play)

@@ -18,6 +18,7 @@ from services.config.workout_config import POSE_CONNECTIONS
 
 class VideoProcessorClass(VideoProcessorBase):
     def __init__(self):
+        print("Processor created")
         self._lock = threading.Lock()
         self._latest_metrics = None
         self._exercise_type = "Squats"
@@ -201,6 +202,7 @@ class VideoProcessorClass(VideoProcessorBase):
         )
 
     def recv(self, frame):
+        print("Frame received")
         image = np.asarray(
             cv2.flip(frame.to_ndarray(format="bgr24"), 1),
             dtype=np.uint8
