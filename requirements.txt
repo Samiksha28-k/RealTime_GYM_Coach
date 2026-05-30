@@ -1,5 +1,7 @@
 streamlit==1.37.1
 streamlit-webrtc==0.47.1
+aiortc==1.5.0
+av==10.0.0
 
 numpy==1.26.4
 pandas==2.2.2
@@ -12,6 +14,3 @@ groq==0.9.0
 gTTS==2.5.1
 
 opencv-python-headless==4.9.0.80
-
-aiortc==1.5.0
-av==10.0.0
