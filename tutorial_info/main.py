@@ -218,6 +218,7 @@ def main():
         )
     else:
         if webrtc_available:
+            st.write("Before webrtc")
             context = webrtc_streamer(
                 key="exercise-analysis",
                 mode=WebRtcMode.SENDRECV,
@@ -231,6 +232,7 @@ def main():
                 media_stream_constraints={"video": True, "audio": False},
                 async_processing=True
             )
+            st.write("After webrtc")
 
             if context.state.playing:
                 sync_metrics_update(context)
