@@ -213,7 +213,8 @@ class VideoProcessorClass(VideoProcessorBase):
         )
 
     def recv(self, frame):
-        print("FRAME RECEIVED")
+        print("CURRENT EXERCISE:", ex_type)
+        print("DETECTOR FOUND:", detector is not None)
         image = np.asarray(
             cv2.flip(frame.to_ndarray(format="bgr24"), 1),
             dtype=np.uint8
@@ -231,6 +232,9 @@ class VideoProcessorClass(VideoProcessorBase):
         
 
         if result.pose_landmarks:
+
+            print("POSE DETECTED")
+            print("LANDMARKS:", len(landmarks))
             landmarks = result.pose_landmarks[0]
 
             self._draw_skeleton(image, landmarks)
@@ -248,6 +252,8 @@ class VideoProcessorClass(VideoProcessorBase):
 
                 self.set_latest_metrics(metrics)
         else:
+
+            print("NO POSE DETECTED")
             self._draw_no_pose_warnings(image)
             
             with self._lock:
