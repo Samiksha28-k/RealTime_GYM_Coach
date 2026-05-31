@@ -220,20 +220,32 @@ def main():
         if webrtc_available:
             
             context = webrtc_streamer(
-                key="exercise-analysis",
-                mode=WebRtcMode.SENDRECV,
-                video_processor_factory=None,
-                
-                rtc_configuration={
-                    "iceServers": [
-                        {"urls": "stun:stun.l.google.com:19302"},
-                        {"urls": "stun:stun1.l.google.com:19302"}
-                    ]
-                },
-                media_stream_constraints={"video": True, "audio": False},
-                async_processing=True
-            )
+        key="exercise-analysis",
+        mode=WebRtcMode.SENDRECV,
+        video_processor_factory=VideoProcessorClass,
+        rtc_configuration={
+            "iceServers": [
+                {"urls": "stun:stun.l.google.com:19302"},
+                {"urls": "stun:stun1.l.google.com:19302"}
+            ]
+        },
+        media_stream_constraints={
+            "video": {
+                "width": 640,
+                "height": 480,
+                "frameRate": 15,
+            },
+            "audio": False,
+        },
+        async_processing=True,
+    )
             
+        print("CONTEXT =", context)
+
+        if context:
+            print("PLAYING =", context.state.playing)
+            print("PROCESSOR =", getattr(context, "video_processor", None))
+                    
 
             if context.state.playing:
                 sync_metrics_update(context)
