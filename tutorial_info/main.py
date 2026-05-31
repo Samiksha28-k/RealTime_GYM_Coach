@@ -27,6 +27,13 @@ try:
 except Exception:
     webrtc_streamer = None
     WebRtcMode = None
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+print("GROQ KEY EXISTS:", bool(os.getenv("GROQ_API_KEY")))
+print("KEY LENGTH:", len(os.getenv("GROQ_API_KEY", "")))
 def main():
     
     try:

@@ -17,3 +17,5 @@ opencv-python-headless==4.9.0.80
 
 aiortc==1.9.0
 av==12.3.0
+
+python-dotenv
