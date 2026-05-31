@@ -7,6 +7,7 @@ _DB_PATH = str(Path(__file__).parent.parent.parent / "data.db")
 
 @st.cache_resource
 def _get_connection() -> sqlite3.Connection:
+    print("OPENING DB:", _DB_PATH)
     conn = sqlite3.connect(_DB_PATH, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
