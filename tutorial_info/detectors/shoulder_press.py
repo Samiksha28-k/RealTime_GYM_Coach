@@ -28,6 +28,12 @@ class ShoulderPressDetector(BaseExercise):
         left_vis = landmarks[self.LEFT_ELBOW].visibility
         right_vis = landmarks[self.RIGHT_ELBOW].visibility
 
+        print(
+            f"ANGLE={int(elbow_angle)} "
+            f"STAGE={self.stage} "
+            f"REPS={self.reps}"
+        )
+
         if left_vis >= right_vis:
             shoulder_idx = self.LEFT_SHOULDER
             elbow_idx = self.LEFT_ELBOW
