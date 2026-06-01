@@ -213,26 +213,27 @@ class VideoProcessorClass(VideoProcessorBase):
         )
 
     def recv(self, frame):
-        print("CURRENT EXERCISE:", ex_type)
-        print("DETECTOR FOUND:", detector is not None)
+        print("RECV CALLED")
         image = np.asarray(
             cv2.flip(frame.to_ndarray(format="bgr24"), 1),
             dtype=np.uint8
         )
 
-      
+        rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         mp_image = mp.Image(
             image_format=mp.ImageFormat.SRGB,
-            data=cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            data=rgb_image
+
         )
 
         self._frame_timestamps_ms += 30
         result = self._landmarker.detect_for_video(mp_image, self._frame_timestamps_ms)
 
-        
+        print("LANDMARK RESULT =", len(result.pose_landmarks))
 
         if result.pose_landmarks:
             print("POSE DETECTED")
+            print("LANDMARK COUNT =", len(result.pose_landmarks[0]))
 
             landmarks = result.pose_landmarks[0]
 
