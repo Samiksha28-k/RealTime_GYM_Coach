@@ -31,10 +31,6 @@ except Exception:
 from dotenv import load_dotenv
 load_dotenv()
 
-raise Exception("RUNNING TUTORIAL_INFO_MAIN")
-
-print("GROQ KEY EXISTS:", bool(os.getenv("GROQ_API_KEY")))
-print("KEY LENGTH:", len(os.getenv("GROQ_API_KEY", "")))
 
 
 
