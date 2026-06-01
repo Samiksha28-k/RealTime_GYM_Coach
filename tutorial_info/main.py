@@ -241,7 +241,14 @@ def main():
                 media_stream_constraints={"video": True, "audio": False},
                 async_processing=True
             )
-            
+
+            st.write("WEBRTC AVAILABLE =", webrtc_available)
+
+            if context:
+                st.write("CONTEXT CREATED")
+            else:
+                st.write("CONTEXT NONE")
+                        
 
             if context.state.playing:
                 sync_metrics_update(context)
