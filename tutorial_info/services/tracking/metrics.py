@@ -25,6 +25,7 @@ def sync_metrics_update(context):
     
     processor.set_exercise(exercise)
     latest_metrics = processor.get_latest_metrics()
+    print("LATEST METRICS =", latest_metrics)
 
     if not latest_metrics:
         return

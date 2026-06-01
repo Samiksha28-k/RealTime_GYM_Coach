@@ -232,28 +232,32 @@ class VideoProcessorClass(VideoProcessorBase):
         
 
         if result.pose_landmarks:
-
             print("POSE DETECTED")
-            print("LANDMARKS:", len(landmarks))
+
             landmarks = result.pose_landmarks[0]
 
             self._draw_skeleton(image, landmarks)
 
             ex_type = self.get_exercise()
+            print("CURRENT EXERCISE =", ex_type)
 
             detector = self._detectors.get(ex_type)
+            print("DETECTOR FOUND =", detector is not None)
 
             if detector:
                 metrics = detector.process(landmarks)
+
+                print("METRICS GENERATED =", metrics)
 
                 metrics["pose_detected"] = True
 
                 self._draw_overlays(image, metrics, ex_type)
 
                 self.set_latest_metrics(metrics)
-        else:
 
+        else:
             print("NO POSE DETECTED")
+
             self._draw_no_pose_warnings(image)
             
             with self._lock:
