@@ -35,7 +35,7 @@ load_dotenv()
 print("GROQ KEY EXISTS:", bool(os.getenv("GROQ_API_KEY")))
 print("KEY LENGTH:", len(os.getenv("GROQ_API_KEY", "")))
 def main():
-    
+    print("DEPLOY TEST 999")
     try:
         asyncio.get_event_loop()
     except RuntimeError:
