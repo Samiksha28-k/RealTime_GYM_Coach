@@ -36,11 +36,10 @@ load_dotenv()
 
 
 def main():
-    print("DEPLOY TEST 999")
-    try:
-        asyncio.get_event_loop()
-    except RuntimeError:
-        asyncio.set_event_loop(asyncio.new_event_loop())
+
+    if "metrics" not in st.session_state:
+        st.session_state.metrics = {}
+    
     st.set_page_config(
         page_icon="🏋️‍♀️",
         page_title="AI Real-time GYM Coach",
@@ -73,6 +72,7 @@ def main():
             st.session_state.voice_pipeline = None
 
     workout_started = st.session_state.get("workout_started", False)
+    metrics = st.session_state.get("metrics", {})
     
     with st.sidebar:
         st.title("🏋️‍♂️ Apna AI Coach")
@@ -141,6 +141,7 @@ def main():
                 st.rerun()
 
         if workout_started:
+            
             st.divider()
 
             exercise = st.session_state.get("exercise_type")
@@ -160,34 +161,38 @@ def main():
 
             if exercise == "Squats":
                 st.subheader("Squat Metrics")
-                st.metric("Knee Angle", f"{st.session_state.knee_angle}°")
-                st.metric("Back Angle", f"{st.session_state.back_angle}°")
-                st.metric("Depth Status", st.session_state.depth_status)
+                st.metric("Knee Angle", f"{metrics.get('knee_angle', 0)}°")
+                st.metric("Back Angle", f"{metrics.get('back_angle', 0)}°")
+                st.metric("Depth Status", metrics.get("depth_status", "N/A"))
 
             elif exercise == "Push-ups":
                 st.subheader("Push-up Metrics")
-                st.metric("Elbow Angle", f"{st.session_state.elbow_angle}°")
-                st.metric("Body Alignment", st.session_state.body_alignment)
-                st.metric("Hip Position", st.session_state.hip_status)
+                st.metric("Elbow Angle", f"{metrics.get('elbow_angle', 0)}°")
+                st.metric("Body Alignment", metrics.get("body_alignment", "N/A"))
+                st.metric("Hip Position", metrics.get("hip_status", "N/A"))
 
             elif exercise == "Biceps Curls (Dumbbell)":
                 st.subheader("Curl Metrics")
-                st.metric("Elbow Angle", f"{st.session_state.elbow_angle}°")
-                st.metric("Shoulder Stability", st.session_state.shoulder_status)
-                st.metric("Swing Detection", st.session_state.swing_status)
+
+                st.metric("Elbow Angle", f"{metrics.get('elbow_angle', 0)}°")
+                st.metric("Shoulder Stability", metrics.get('shoulder_status', "N/A"))
+                st.metric("Swing Detection", metrics.get('swing_status', "N/A"))
 
             elif exercise == "Shoulder Press":
                 st.subheader("Shoulder Press Metrics")
-                st.metric("Elbow Angle", f"{st.session_state.elbow_angle}°")
-                st.metric("Arm Extension", st.session_state.extension_status)
-                st.metric("Back Arch", st.session_state.back_arch_status)
 
+                st.metric("Elbow Angle", f"{metrics.get('elbow_angle', 0)}°")
+                st.metric("Arm Extension", metrics.get('extension_status', "N/A"))
+                st.metric("Back Arch", metrics.get('back_arch_status', "N/A"))
             elif exercise == "Lunges":
                 st.subheader("Lunge Metrics")
-                st.metric("Front Knee Angle", f"{st.session_state.front_knee_angle}°")
-                st.metric("Torso Angle", f"{st.session_state.torso_angle}°")
-                st.metric("Balance Status", st.session_state.balance_status)
 
+                st.metric("Front Knee Angle", f"{metrics.get('front_knee_angle', 0)}°")
+                st.metric("Torso Angle", f"{metrics.get('torso_angle', 0)}°")
+                st.metric("Balance Status", metrics.get("balance_status", "N/A"))
+
+    import streamlit_webrtc
+    st.write("WEBRTC VERSION =", streamlit_webrtc.__version__)
     st.title("AI Real-time GYM Coach")
     st.markdown("#### Real-time pose detection with proactive AI voice coaching")
 
@@ -226,12 +231,12 @@ def main():
         )
     else:
         if webrtc_available:
-            
+
             context = webrtc_streamer(
                 key="exercise-analysis",
                 mode=WebRtcMode.SENDRECV,
                 video_processor_factory=VideoProcessorClass,
-                
+
                 rtc_configuration={
                     "iceServers": [
                         {"urls": "stun:stun.l.google.com:19302"},
@@ -242,12 +247,21 @@ def main():
                 async_processing=True
             )
 
-            st.write("WEBRTC AVAILABLE =", webrtc_available)
+            
+            
 
-            if context:
-                st.write("CONTEXT CREATED")
-            else:
-                st.write("CONTEXT NONE")
+            if context and hasattr(context, "video_processor") and context.video_processor:
+
+                context.video_processor.set_exercise(
+                    st.session_state.get("exercise_type", "Squats")
+                )
+
+                metrics = context.video_processor.get_latest_metrics() or {}
+                st.session_state.metrics = metrics
+
+            st.write("LIVE METRICS:", metrics)
+
+            
                         
 
             if context.state.playing:
