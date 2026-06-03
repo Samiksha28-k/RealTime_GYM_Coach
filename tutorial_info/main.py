@@ -36,7 +36,24 @@ load_dotenv()
 
 
 def main():
+    try:
+        st.session_state
+    except Exception:
+        pass
 
+    if "user_id" not in st.session_state:
+        st.session_state["user_id"] = None
+
+    if "username" not in st.session_state:
+        st.session_state["username"] = None
+
+    if "metrics" not in st.session_state:
+        st.session_state["metrics"] = {}
+
+    st.set_page_config(
+        ...
+    )
+    
     if "metrics" not in st.session_state:
         st.session_state.metrics = {}
     
@@ -52,10 +69,10 @@ def main():
 
     init_db()
 
-    if not render_login_wall():
-        return 
-
     initial_session_defaults()
+
+    if not render_login_wall():
+        return
 
     if "voice_pipeline" not in st.session_state:
         try:
