@@ -213,8 +213,7 @@ class VideoProcessorClass(VideoProcessorBase):
         )
 
     def recv(self, frame):
-        print("CURRENT EXERCISE =", ex_type)
-        print("METRICS GENERATED =", metrics)
+       
         image = np.asarray(
             cv2.flip(frame.to_ndarray(format="bgr24"), 1),
             dtype=np.uint8

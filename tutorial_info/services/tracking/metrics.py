@@ -14,7 +14,7 @@ def sync_metrics_update(context):
 
     
     
-    print("PROCESSOR =", processor)
+    print("PROCESSOR =", processor) 
     if not processor:
         return 
     
