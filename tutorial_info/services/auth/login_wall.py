@@ -5,7 +5,7 @@ from services.persistence.exercise_repository import get_or_create_user
 def render_login_wall():
     print("USER_ID =", st.session_state.get("user_id"))
     print("USERNAME =", st.session_state.get("username"))
-    
+
     user_id = st.session_state.get("user_id", None)
 
     if user_id is not None:
@@ -32,6 +32,6 @@ def render_login_wall():
         st.session_state["user_id"] = user["id"]
         st.session_state["username"] = user["username"]
 
-        st.rerun()
+        return True 
 
     return False
