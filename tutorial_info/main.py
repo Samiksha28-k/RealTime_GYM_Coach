@@ -116,7 +116,7 @@ def main():
 
                 st.session_state.last_notified_sets_completed = 0
                 st.session_state.last_notified_workout_complete = False
-                st.rerun()
+                # st.rerun()
         else:
             exercise = st.session_state.get("exercise_type")
             sets = st.session_state.get("target_sets")
@@ -138,7 +138,7 @@ def main():
                     if result:
                         st.session_state.audio_to_play, st.session_state.coach_feedback = result
 
-                st.rerun()
+                # st.rerun()
 
         if workout_started:
             
@@ -264,7 +264,7 @@ def main():
             
                         
 
-            if context.state.playing:
+            if context and context.state.playing:
                 sync_metrics_update(context)
 
                 if st.session_state.get("audio_to_play"):
