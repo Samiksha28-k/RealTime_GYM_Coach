@@ -49,11 +49,11 @@ class ShoulderPressDetector(BaseExercise):
             self.get_point(landmarks, wrist_idx),
 
 
-            print(
-                f"ANGLE={int(elbow_angle)} "
-                f"STAGE={self.stage} "
-                f"REPS={self.reps}"
-            )
+        print(
+            f"ANGLE={int(elbow_angle)} "
+            f"STAGE={self.stage} "
+            f"REPS={self.reps}"
+        )
         )
 
         key_landmarks_visible = landmarks[shoulder_idx].visibility > self.MIN_VISIBILITY and landmarks[elbow_idx].visibility > self.MIN_VISIBILITY and landmarks[wrist_idx].visibility > self.MIN_VISIBILITY

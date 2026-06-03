@@ -8,7 +8,7 @@ def initial_session_defaults():
         "reps_per_set": 0,
         "sets_completed": 0,
         "current_set_reps": 0,
-        "workout_complete": False,
+        "workout_completed": False,
         "last_notified_sets_completed": 0,
         "last_notified_workout_complete": False,
         "last_saved_sets_completed": 0,
@@ -25,6 +25,7 @@ def initial_session_defaults():
 
         # Common Angles
         "knee_angle": 0,
+        
         "back_angle": 0,
         "elbow_angle": 0,
         "front_knee_angle": 0,

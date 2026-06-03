@@ -36,10 +36,15 @@ load_dotenv()
 
 
 def main():
-    try:
-        st.session_state
-    except Exception:
-        pass
+  
+     
+    
+    st.set_page_config(
+        page_icon="🏋️‍♀️",
+        page_title="AI Real-time GYM Coach",
+        initial_sidebar_state="expanded",
+        layout="centered"
+    )
 
     if "user_id" not in st.session_state:
         st.session_state["user_id"] = None
@@ -49,20 +54,6 @@ def main():
 
     if "metrics" not in st.session_state:
         st.session_state["metrics"] = {}
-
-    st.set_page_config(
-        ...
-    )
-    
-    if "metrics" not in st.session_state:
-        st.session_state.metrics = {}
-    
-    st.set_page_config(
-        page_icon="🏋️‍♀️",
-        page_title="AI Real-time GYM Coach",
-        initial_sidebar_state="expanded",
-        layout="centered"
-    )
 
     load_css(os.path.join(os.getcwd(), "static", "style.css"))
     inject_local_font(os.path.join(os.getcwd(), "static", "AdobeClean.otf"), "AdobeClean")
