@@ -247,15 +247,21 @@ class VideoProcessorClass(VideoProcessorBase):
             print("DETECTOR FOUND =", detector is not None)
 
             if detector:
-                metrics = detector.process(landmarks)
+                try:
+                    metrics = detector.process(landmarks)
 
-                print("METRICS GENERATED =", metrics)
+                    print("METRICS GENERATED =", metrics)
 
-                metrics["pose_detected"] = True
+                    metrics["pose_detected"] = True
 
-                self._draw_overlays(image, metrics, ex_type)
+                    self._draw_overlays(image, metrics, ex_type)
 
-                self.set_latest_metrics(metrics)
+                    self.set_latest_metrics(metrics)
+
+                except Exception as e:
+                    print("DETECTOR ERROR =", str(e))
+                    import traceback
+                    traceback.print_exc()
 
         else:
             print("NO POSE DETECTED")
