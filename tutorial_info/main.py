@@ -267,7 +267,12 @@ def main():
                 metrics = context.video_processor.get_latest_metrics() or {}
                 st.session_state.metrics = metrics
 
+                if "reps" in metrics:
+                    st.session_state.reps = metrics["reps"]
+
             st.write("LIVE METRICS:", metrics)
+            st.write("SESSION METRICS:", st.session_state.get("metrics"))
+            st.write("SESSION REPS:", st.session_state.get("reps"))
 
             st.write("WEBRTC AVAILABLE =", webrtc_available)
 
