@@ -293,9 +293,6 @@ def main():
                         
 
             if context:
-                print("SYNC CALLED")
-                print("PROCESSOR =", processor)
-                print("LATEST =", processor.get_latest_metrics() if processor else None)
                 
                 sync_metrics_update(context)
 
