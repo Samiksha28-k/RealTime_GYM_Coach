@@ -192,6 +192,9 @@ def main():
                 st.metric("Elbow Angle", f"{metrics.get('elbow_angle', 0)}°")
                 st.metric("Arm Extension", metrics.get('extension_status', "N/A"))
                 st.metric("Back Arch", metrics.get('back_arch_status', "N/A"))
+
+
+                
             elif exercise == "Lunges":
                 st.subheader("Lunge Metrics")
 

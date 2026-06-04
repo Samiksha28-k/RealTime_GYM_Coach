@@ -49,6 +49,8 @@ class ShoulderPressDetector(BaseExercise):
             self.get_point(landmarks, wrist_idx),
         )
 
+        print("ANGLE =", elbow_angle)
+
         print(
             f"ANGLE={int(elbow_angle)} "
             f"STAGE={self.stage} "
