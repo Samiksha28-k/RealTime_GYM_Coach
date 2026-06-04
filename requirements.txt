@@ -16,3 +16,4 @@ gTTS==2.5.1
 opencv-python-headless==4.9.0.80
 
 python-dotenv
+tornado==6.4.2
