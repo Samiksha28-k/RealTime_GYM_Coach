@@ -269,7 +269,12 @@ def main():
 
             st.write("LIVE METRICS:", metrics)
 
-            
+            st.write("WEBRTC AVAILABLE =", webrtc_available)
+
+            if context:
+                st.write("PLAYING =", context.state.playing)
+            else:
+                st.write("CONTEXT = NONE")
                         
 
             if context and context.state.playing:
