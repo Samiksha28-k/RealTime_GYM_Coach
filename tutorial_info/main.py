@@ -1,3 +1,5 @@
+from platform import processor
+
 import streamlit as st
 import os
 import asyncio
@@ -80,7 +82,7 @@ def main():
             st.session_state.voice_pipeline = None
 
     workout_started = st.session_state.get("workout_started", False)
-    metrics = st.session_state.get("metrics", {})
+    metrics = {}
     
     with st.sidebar:
         st.title("🏋️‍♂️ Apna AI Coach")
@@ -149,6 +151,7 @@ def main():
                 st.rerun()
 
         if workout_started:
+            metrics = st.session_state.get("metrics", {})
             
             st.divider()
 
@@ -194,7 +197,7 @@ def main():
                 st.metric("Back Arch", metrics.get('back_arch_status', "N/A"))
 
 
-                
+
             elif exercise == "Lunges":
                 st.subheader("Lunge Metrics")
 
@@ -268,7 +271,11 @@ def main():
                 )
 
                 metrics = context.video_processor.get_latest_metrics() or {}
+
+                print("LATEST FROM PROCESSOR =", metrics)
                 st.session_state.metrics = metrics
+
+                
 
                 if "reps" in metrics:
                     st.session_state.reps = metrics["reps"]
@@ -285,7 +292,11 @@ def main():
                 st.write("CONTEXT = NONE")
                         
 
-            if context and context.state.playing:
+            if context:
+                print("SYNC CALLED")
+                print("PROCESSOR =", processor)
+                print("LATEST =", processor.get_latest_metrics() if processor else None)
+                
                 sync_metrics_update(context)
 
                 if st.session_state.get("audio_to_play"):
