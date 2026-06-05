@@ -298,7 +298,7 @@ def main():
 
                 if st.session_state.get("audio_to_play"):
                     autoplay_audio(st.session_state.audio_to_play)
-                    st.session_state.audio_to_play = None
+                    
 
             inject_webrtc_styles()
 
